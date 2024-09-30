@@ -3,6 +3,7 @@ package config
 import (
 	"github.com/ilyakaznacheev/cleanenv"
 	"log"
+	"mood_tracker/internal/loadEnv"
 	"os"
 	"time"
 )
@@ -21,7 +22,13 @@ type HTTPServer struct {
 func MustLoad() *Config {
 	configPath := os.Getenv("CONFIG_PATH")
 	if configPath == "" {
-		log.Fatal("CONFIG_PATH isn't set")
+		log.Print("CONFIG_PATH isn't set, trying to load godotenv")
+		loadEnv.Load()
+
+		configPath = os.Getenv("CONFIG_PATH")
+		if configPath == "" {
+			log.Fatalf("CONGIG_PATH isn't set.")
+		}
 	}
 
 	if _, err := os.Stat(configPath); os.IsNotExist(err) {
