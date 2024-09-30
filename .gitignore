@@ -22,3 +22,7 @@ go.work
 
 # Env files
 *.env
+
+# DB folder
+database/pgadmin
+database/pgdata
