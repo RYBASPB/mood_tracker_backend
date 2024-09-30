@@ -20,12 +20,15 @@ func main() {
 	log.Info("starting logger", slog.String("env", cfg.Env))
 	log.Debug("log level is Debug")
 
-	postgresql.ConnectToDB()
+	_, err := postgresql.ConnectToDB()
+	if err != nil {
+		log.Error("Error in initialization of DB", slog.AnyValue(err))
+	}
+	log.Info("connection to database is successful")
 }
 
 func setupLogger(env string) *slog.Logger {
 	var log *slog.Logger
-
 	switch env {
 	case envLocal:
 		log = slog.New(slog.NewTextHandler(os.Stdout,
