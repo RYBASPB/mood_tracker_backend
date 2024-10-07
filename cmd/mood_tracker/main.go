@@ -1,6 +1,8 @@
 package main
 
 import (
+	"github.com/go-chi/chi/v5"
+	"github.com/go-chi/chi/v5/middleware"
 	"log/slog"
 	"mood_tracker/internal/config"
 	"mood_tracker/internal/storage/postgresql"
@@ -25,6 +27,14 @@ func main() {
 		log.Error("Error in initialization of DB", slog.AnyValue(err))
 	}
 	log.Info("connection to database is successful")
+
+	router := chi.NewRouter()
+
+	router.Use(middleware.RequestID)
+	router.Use(middleware.RealIP)
+	router.Use(middleware.Logger)
+	router.Use(middleware.Recoverer)
+	router.Use(middleware.URLFormat)
 }
 
 func setupLogger(env string) *slog.Logger {
