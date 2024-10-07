@@ -25,6 +25,10 @@ func ConnectToDB() (*Storage, error) {
 	return &Storage{pool}, err
 }
 
+func (s *Storage) CloseConnection() {
+	s.db.Close()
+}
+
 func (s *Storage) AddMoodScore(dto storage.AddMoodScoreDto) (moodScoreId int64, err error) {
 	const op = "storage.postgresql.AddMoodScore"
 	sql, args, err := sq.
