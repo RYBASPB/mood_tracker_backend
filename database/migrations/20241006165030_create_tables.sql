@@ -7,7 +7,7 @@ create table if not exists users (
 
 create table if not exists mood_scores (
     id serial primary key,
-    score smallint,
+    score smallint constraint min_max_score check (score >= 0 and score <= 10),
     date date not null default current_date,
     user_id integer,
     foreign key (user_id) references users (id)
