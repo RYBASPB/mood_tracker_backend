@@ -10,7 +10,7 @@ type MoodScore struct {
 }
 
 type AddMoodScoreDto struct {
-	Score  int64
+	Score  int8
 	UserId int64
 }
 
