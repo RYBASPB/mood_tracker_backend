@@ -31,6 +31,7 @@ func main() {
 	db, err := postgresql.ConnectToDB()
 	if err != nil {
 		log.Error("Error in initialization of DB", slog.AnyValue(err))
+		os.Exit(100)
 	}
 	log.Info("connection to database is successful")
 

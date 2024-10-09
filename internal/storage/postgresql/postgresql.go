@@ -19,7 +19,11 @@ func ConnectToDB() (*Storage, error) {
 
 	pool, err := pgxpool.New(context.Background(), os.Getenv("DATABASE_URL"))
 	if err != nil {
-		return nil, fmt.Errorf("%s : %w", op, err)
+		return nil, fmt.Errorf("%s: Couldn't create pgxpool", op)
+	}
+	_, err = pool.Acquire(context.Background())
+	if err != nil {
+		return nil, fmt.Errorf("%s: Couldn't connect to database", op)
 	}
 
 	return &Storage{pool}, err
