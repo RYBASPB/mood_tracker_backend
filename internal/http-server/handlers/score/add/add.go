@@ -4,10 +4,10 @@ import (
 	"errors"
 	"github.com/go-chi/chi/v5/middleware"
 	"github.com/go-chi/render"
-	"github.com/go-playground/validator/v10"
 	"io"
 	"log/slog"
 	"mood_tracker/internal/lib/api/response"
+	"mood_tracker/internal/lib/api/validate"
 	"mood_tracker/internal/storage"
 	"net/http"
 )
@@ -49,10 +49,11 @@ func New(log *slog.Logger, scoreAdder ScoreAdder) http.HandlerFunc {
 
 		log.Info("request body decoded", slog.Any("req", req))
 
-		if err := validator.New().Struct(req); err != nil {
-			validateErr := err.(validator.ValidationErrors)
-			log.Error("invalid request", "error", err)
-			render.JSON(w, r, response.Error(validateErr.Error()))
+		// interface is *Request
+		msg, err := validate.Struct(req)
+		if err != nil {
+			log.Error(msg, "error", err)
+			render.JSON(w, r, response.Error(msg))
 			return
 		}
 
