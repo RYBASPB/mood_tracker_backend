@@ -7,6 +7,7 @@ import (
 	"log/slog"
 	"mood_tracker/internal/config"
 	"mood_tracker/internal/http-server/handlers/score/add"
+	"mood_tracker/internal/http-server/handlers/score/get"
 	httpLogger "mood_tracker/internal/http-server/middleware/logger"
 	"mood_tracker/internal/storage/postgresql"
 	"net/http"
@@ -47,6 +48,7 @@ func main() {
 	router.Use(httpLogger.New(log))
 
 	router.Route("/scores", func(r chi.Router) {
+		r.Get("/", get.New(log, db))
 		r.Post("/", add.New(log, db))
 	})
 

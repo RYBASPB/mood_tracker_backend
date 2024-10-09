@@ -53,8 +53,8 @@ func (s *Storage) AddMoodScore(dto storage.AddMoodScoreDto) (moodScoreId int64, 
 	return
 }
 
-func (s *Storage) GetMoodScoresById(userId int64) (moodScores []storage.MoodScore, err error) {
-	const op = "storage.postgresql.GetMoodScoresById"
+func (s *Storage) GetMoodScoresByUserId(userId int64) (moodScores []storage.MoodScore, err error) {
+	const op = "storage.postgresql.GetMoodScoresByUserId"
 	sql, args, err := sq.
 		Select("id", "score", "date", "user_id").
 		From("mood_scores").
